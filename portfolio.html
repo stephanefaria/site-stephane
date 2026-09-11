@@ -18,8 +18,11 @@ a{text-decoration:none;color:inherit;}
 .nav{padding:6px 16px;display:flex;align-items:center;border-bottom:1px solid #e8e8e8;position:sticky;top:0;background:#fff;z-index:100;height:32px;}
 .nav a{font-weight:400;font-size:13px;text-transform:uppercase;}
 .full-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:260px;gap:2px;}
-@media(max-width:768px){.full-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:768px){.full-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px;}
+  .fg{grid-column:span 1;}}
 .fg{overflow:hidden;cursor:default;background:#e4e2de;position:relative;display:block;}
+.fg{grid-column:span 2;}
+.fg:nth-child(4n+1),.fg:nth-child(4n+2){grid-row:span 2;}
 .fg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease;}
 .fg:hover img{transform:scale(1.05);}
 .fg-label{
