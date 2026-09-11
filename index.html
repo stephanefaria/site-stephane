@@ -45,17 +45,10 @@ a{text-decoration:none;color:inherit;}
   transform:translate(-50%,-50%) rotate(-90deg);
   display:block;
 }
-/* véu escuro pra garantir a leitura do texto sobre qualquer quadro */
-.header-video::after{
-  content:'';
-  position:absolute;inset:0;
-  background:rgba(0,0,0,.38);
-  z-index:1;
-}
 .hv-services{
   position:absolute;inset:0;z-index:2;
-  display:flex;align-items:center;justify-content:center;
-  padding:16px 24px;
+  display:flex;align-items:flex-end;justify-content:center;
+  padding:0 24px clamp(18px,3.2vw,42px);
   pointer-events:none;
 }
 .hv-services ul{
@@ -68,11 +61,10 @@ a{text-decoration:none;color:inherit;}
 .hv-services li{
   font-family:'TeX Gyre Heros','Helvetica Neue',Helvetica,Arial,sans-serif;
   font-weight:400;
-  font-size:clamp(10px,1.05vw,15px);
+  font-size:clamp(8px,0.85vw,12px);
   letter-spacing:0.16em;
   text-transform:uppercase;
-  color:#fff;
-  text-shadow:0 1px 10px rgba(0,0,0,.6);
+  color:#8B1A16;
   position:relative;
 }
 .hv-services li+li::before{
