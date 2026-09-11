@@ -19,6 +19,26 @@ a{text-decoration:none;color:inherit;}
 }
 .nav a{font-weight:900;font-size:13px;text-transform:uppercase;}
 
+/* ── HEADER VIDEO ── */
+/* o vídeo é vertical e foi filmado deitado: giramos 90° via CSS */
+.header-video{
+  --hv-h:clamp(170px,24vw,320px);
+  position:relative;
+  width:100%;
+  height:var(--hv-h);
+  overflow:hidden;
+  background:#111;
+}
+.header-video video{
+  position:absolute;
+  top:50%;left:50%;
+  width:var(--hv-h);   /* vira a altura da faixa após o giro */
+  height:100vw;        /* vira a largura da faixa após o giro */
+  object-fit:cover;
+  transform:translate(-50%,-50%) rotate(-90deg);
+  display:block;
+}
+
 /* ── QUADRANTS ── */
 .quads{
   display:grid;
@@ -28,7 +48,7 @@ a{text-decoration:none;color:inherit;}
   min-height:320px;
   position:relative;
   overflow:visible;
-  margin-top:260px;
+  margin-top:0;
 }
 .quad{
   position:relative;overflow:hidden;
@@ -61,7 +81,7 @@ a{text-decoration:none;color:inherit;}
   grid-template-columns:repeat(6,1fr);
   grid-auto-rows:260px;
   gap:2px;
-  margin-top:2px;
+  margin-top:40px;
 }
 .fg{overflow:hidden;cursor:default;background:#e4e2de;position:relative;display:block;}
 .fg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease;}
@@ -122,12 +142,17 @@ a{text-decoration:none;color:inherit;}
 @media(max-width:768px){
   .quads{grid-template-columns:repeat(2,1fr);height:auto;}
   .quad{height:50vw;}
-  .full-grid{grid-template-columns:repeat(3,1fr);}
+  .full-grid{grid-template-columns:repeat(3,1fr);margin-top:28px;}
 }
 html{scroll-behavior:smooth;}
 </style>
 </head>
 <body>
+
+<!-- ── VÍDEO DE CABEÇALHO ── -->
+<div class="header-video">
+  <video src="video/header.mp4" autoplay muted loop playsinline preload="metadata"></video>
+</div>
 
 <!-- ── QUADRANTS ── -->
 <div class="quads">
@@ -136,7 +161,6 @@ html{scroll-behavior:smooth;}
   <a class="quad" href="sobre.html">
     <!-- COLOQUE A IMAGEM DO QUAD 01 EM: images/quads/quad-01.jpg -->
     <img src="images/quads/quad-01.jpg" alt="">
-    <div class="quad-num">01</div>
     <div class="quad-overlay"></div>
     <span class="quad-arrow">↗</span>
     <div class="quad-label">
@@ -148,7 +172,6 @@ html{scroll-behavior:smooth;}
   <a class="quad" href="portfolio.html">
     <!-- COLOQUE A IMAGEM DO QUAD 02 EM: images/quads/quad-02.jpg -->
     <img src="images/quads/quad-02.jpg" alt="">
-    <div class="quad-num">02</div>
     <div class="quad-overlay"></div>
     <span class="quad-arrow">↗</span>
     <div class="quad-label">
@@ -160,7 +183,6 @@ html{scroll-behavior:smooth;}
   <a class="quad" href="javascript:void(0)" onclick="showContato(event)">
     <!-- COLOQUE A IMAGEM DO QUAD 03 EM: images/quads/quad-03.jpg -->
     <img src="images/quads/quad-03.jpg" alt="">
-    <div class="quad-num">03</div>
     <div class="quad-overlay"></div>
     <span class="quad-arrow">↗</span>
     <div class="quad-label">
@@ -172,7 +194,6 @@ html{scroll-behavior:smooth;}
   <a class="quad" href="https://instagram.com/stephanefaria" target="_blank" rel="noopener">
     <!-- COLOQUE A IMAGEM DO QUAD 04 EM: images/quads/quad-04.jpg -->
     <img src="images/quads/quad-04.jpg" alt="">
-    <div class="quad-num">04</div>
     <div class="quad-overlay"></div>
     <span class="quad-arrow">↗</span>
     <div class="quad-label">
