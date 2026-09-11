@@ -19,10 +19,12 @@ a{text-decoration:none;color:inherit;}
 .nav a{font-weight:400;font-size:13px;text-transform:uppercase;}
 .full-grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:260px;gap:2px;}
 @media(max-width:768px){.full-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px;}
-  .fg{grid-column:span 1;}}
+  .fg{grid-column:span 1;}
+  .fg:last-child{grid-column:span 2;grid-row:span 1;}}
 .fg{overflow:hidden;cursor:default;background:#e4e2de;position:relative;display:block;}
 .fg{grid-column:span 2;}
 .fg:nth-child(4n+1),.fg:nth-child(4n+2){grid-row:span 2;}
+.fg:last-child{grid-column:span 6;grid-row:span 2;}
 .fg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease;}
 .fg:hover img{transform:scale(1.05);}
 .fg-label{
@@ -115,25 +117,10 @@ a{text-decoration:none;color:inherit;}
     <img src="images/covers/12-bt-skincare.jpg" alt="BT SKINCARE">
     <div class="fg-label"><span class="lbl-bold">BT SKINCARE</span></div>
   </a>
-  <a class="fg" href="albums/13-moving-acao.html">
+  <a class="fg" href="albums/13-bt-juicy-oil.html">
     <span class="fg-num">13</span>
-    <img src="images/covers/13-moving-acao.jpg" alt="MOVING AÇÃO">
-    <div class="fg-label"><span class="lbl-bold">MOVING AÇÃO</span></div>
-  </a>
-  <a class="fg" href="albums/14-bt-juicy-oil.html">
-    <span class="fg-num">14</span>
-    <img src="images/covers/14-bt-juicy-oil.jpg" alt="BT JUICY OIL">
+    <img src="images/covers/13-bt-juicy-oil.jpg" alt="BT JUICY OIL">
     <div class="fg-label"><span class="lbl-bold">BT JUICY OIL</span></div>
-  </a>
-  <a class="fg" href="albums/15-bt-skin.html">
-    <span class="fg-num">15</span>
-    <img src="images/covers/15-bt-skin.jpg" alt="BT SKIN">
-    <div class="fg-label"><span class="lbl-bold">BT SKIN</span></div>
-  </a>
-  <a class="fg" href="albums/16-bt-pencil-eyes.html">
-    <span class="fg-num">16</span>
-    <img src="images/covers/16-bt-pencil-eyes.jpg" alt="BT PENCIL EYES">
-    <div class="fg-label"><span class="lbl-bold">BT PENCIL EYES</span></div>
   </a>
 </div>
 
