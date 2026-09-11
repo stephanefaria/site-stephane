@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stephane Faria — Portfolio</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:#fff;color:#000;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+/* ── NAV ── */
+.nav{
+  padding:10px 28px;
+  font-size:13px;
+  letter-spacing:0.02em;
+  text-transform:uppercase;
+  display:flex;gap:0;align-items:center;
+}
+.nav a{font-weight:900;font-size:13px;text-transform:uppercase;}
+
+/* ── QUADRANTS ── */
+.quads{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  height:32vw;
+  max-height:520px;
+  min-height:320px;
+  position:relative;
+  overflow:visible;
+  margin-top:260px;
+}
+.quad{
+  position:relative;overflow:hidden;
+  border-right:1px solid #ddd;
+  cursor:default;display:block;
+  background:#ddd;
+}
+.quad:last-child{border-right:none;}
+.quad>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.7s ease;}
+.quad:hover img{transform:scale(1.05);}
+.quad-num{
+  position:absolute;top:12px;left:14px;z-index:4;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;font-size:13px;
+  color:#fff;mix-blend-mode:difference;
+}
+.quad-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .4s ease;z-index:2;}
+.quad-label{
+  position:absolute;inset:0;z-index:3;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:20px 16px;
+}
+.quad-label-title{font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;color:#fff;line-height:1.05;text-shadow:0 1px 14px rgba(0,0,0,.6),0 0 3px rgba(0,0,0,.45);}
+.quad-arrow{position:absolute;top:14px;right:14px;font-size:13px;color:transparent;z-index:4;transition:color .3s,transform .3s;}
+.quad:hover .quad-overlay{background:rgba(0,0,0,.44);}
+.quad:hover .quad-arrow{color:rgba(255,255,255,.9);transform:translate(3px,-3px);}
+
+/* ── FULL GRID ── */
+.full-grid{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  grid-auto-rows:260px;
+  gap:2px;
+  margin-top:2px;
+}
+.fg{overflow:hidden;cursor:default;background:#e4e2de;position:relative;display:block;}
+.fg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease;}
+.fg:hover img{transform:scale(1.05);}
+.fg-label{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.45);
+  color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:1rem;
+  opacity:0;transition:opacity .25s ease;
+  pointer-events:none;z-index:2;
+  flex-direction:column;
+}
+.fg:hover .fg-label{opacity:1;}
+.lbl-bold{
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-weight:900;letter-spacing:0.06em;
+  font-size:clamp(13px,1.15vw,18px);
+  line-height:1.05;text-transform:uppercase;display:block;text-shadow:0 1px 12px rgba(0,0,0,.55),0 0 3px rgba(0,0,0,.4);
+}
+.lbl-bold+.lbl-bold{margin-top:0.05em;}
+.lbl-small{
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-weight:900;letter-spacing:0.12em;
+  font-size:clamp(9px,0.78vw,12px);
+  line-height:1.2;display:block;
+  margin-top:0.5em;text-transform:uppercase;
+}
+.fg-num{
+  position:absolute;top:8px;left:10px;z-index:3;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  font-weight:700;font-size:clamp(11px,0.9vw,13px);
+  letter-spacing:0.02em;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.7);
+  pointer-events:none;user-select:none;
+}
+
+/* ── FOOTER ── */
+.footer{margin-top:80px;padding:18px 28px;border-top:1px solid #e0e0e0;display:flex;justify-content:space-between;align-items:center;}
+.footer p{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#888;}
+
+/* ── CONTATO OVERLAY ── */
+.contato-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.88);
+  z-index:500;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+}
+.contato-overlay.active{display:flex;}
+.contato-overlay a{
+  font-size:clamp(13px,1.4vw,20px);font-weight:700;
+  letter-spacing:0.08em;
+  font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+  color:#fff;text-transform:uppercase;text-align:center;
+}
+.contato-overlay a:hover{text-decoration:underline;}
+
+@media(max-width:768px){
+  .quads{grid-template-columns:repeat(2,1fr);height:auto;}
+  .quad{height:50vw;}
+  .full-grid{grid-template-columns:repeat(3,1fr);}
+}
+html{scroll-behavior:smooth;}
+</style>
+</head>
+<body>
+
+<!-- ── QUADRANTS ── -->
+<div class="quads">
+
+  <!-- 01 — SOBRE MIM -->
+  <a class="quad" href="sobre.html">
+    <!-- COLOQUE A IMAGEM DO QUAD 01 EM: images/quads/quad-01.jpg -->
+    <img src="images/quads/quad-01.jpg" alt="">
+    <div class="quad-num">01</div>
+    <div class="quad-overlay"></div>
+    <span class="quad-arrow">↗</span>
+    <div class="quad-label">
+      <div class="quad-label-title">SOBRE<br>MIM</div>
+    </div>
+  </a>
+
+  <!-- 02 — PORTFOLIO -->
+  <a class="quad" href="portfolio.html">
+    <!-- COLOQUE A IMAGEM DO QUAD 02 EM: images/quads/quad-02.jpg -->
+    <img src="images/quads/quad-02.jpg" alt="">
+    <div class="quad-num">02</div>
+    <div class="quad-overlay"></div>
+    <span class="quad-arrow">↗</span>
+    <div class="quad-label">
+      <div class="quad-label-title">PORTFOLIO</div>
+    </div>
+  </a>
+
+  <!-- 03 — CONTATO -->
+  <a class="quad" href="javascript:void(0)" onclick="showContato(event)">
+    <!-- COLOQUE A IMAGEM DO QUAD 03 EM: images/quads/quad-03.jpg -->
+    <img src="images/quads/quad-03.jpg" alt="">
+    <div class="quad-num">03</div>
+    <div class="quad-overlay"></div>
+    <span class="quad-arrow">↗</span>
+    <div class="quad-label">
+      <div class="quad-label-title">CONTATO</div>
+    </div>
+  </a>
+
+  <!-- 04 — INSTAGRAM -->
+  <a class="quad" href="https://instagram.com/stephanefaria" target="_blank" rel="noopener">
+    <!-- COLOQUE A IMAGEM DO QUAD 04 EM: images/quads/quad-04.jpg -->
+    <img src="images/quads/quad-04.jpg" alt="">
+    <div class="quad-num">04</div>
+    <div class="quad-overlay"></div>
+    <span class="quad-arrow">↗</span>
+    <div class="quad-label">
+      <div class="quad-label-title">@stephane<br>faria</div>
+    </div>
+  </a>
+</div>
+
+<!-- ── GRID DE ÁLBUNS ── -->
+<!-- ADICIONE SEUS ÁLBUNS AQUI, SEGUINDO O MODELO ABAIXO: -->
+<!--
+  <a class="fg" href="albums/01-nomeDoAlbum.html">
+    <span class="fg-num">01</span>
+    <img src="images/covers/01-nomeDoAlbum.jpg" alt="">
+    <div class="fg-label"><span class="lbl-bold">NOME DO ÁLBUM</span></div>
+  </a>
+-->
+<div class="full-grid" id="work">
+  <a class="fg" href="albums/01-bt-ice.html">
+    <span class="fg-num">01</span>
+    <img src="images/covers/01-bt-ice.jpg" alt="BT ICE">
+    <div class="fg-label"><span class="lbl-bold">BT ICE</span></div>
+  </a>
+  <a class="fg" href="albums/02-pudim-beauty.html">
+    <span class="fg-num">02</span>
+    <img src="images/covers/02-pudim-beauty.jpg" alt="PUDIM BEAUTY">
+    <div class="fg-label"><span class="lbl-bold">PUDIM BEAUTY</span></div>
+  </a>
+  <a class="fg" href="albums/03-satu-2025.html">
+    <span class="fg-num">03</span>
+    <img src="images/covers/03-satu-2025.jpg" alt="SATU 2025">
+    <div class="fg-label"><span class="lbl-bold">SATU 2025</span></div>
+  </a>
+  <a class="fg" href="albums/04-starter.html">
+    <span class="fg-num">04</span>
+    <img src="images/covers/04-starter.jpg" alt="STARTER">
+    <div class="fg-label"><span class="lbl-bold">STARTER</span></div>
+  </a>
+  <a class="fg" href="albums/05-bt-celebrate.html">
+    <span class="fg-num">05</span>
+    <img src="images/covers/05-bt-celebrate.jpg" alt="BT CELEBRATE">
+    <div class="fg-label"><span class="lbl-bold">BT CELEBRATE</span></div>
+  </a>
+  <a class="fg" href="albums/06-disney-wish.html">
+    <span class="fg-num">06</span>
+    <img src="images/covers/06-disney-wish.jpg" alt="DISNEY WISH">
+    <div class="fg-label"><span class="lbl-bold">DISNEY WISH</span></div>
+  </a>
+  <a class="fg" href="albums/07-liegi-summer.html">
+    <span class="fg-num">07</span>
+    <img src="images/covers/07-liegi-summer.jpg" alt="LIEGI SUMMER">
+    <div class="fg-label"><span class="lbl-bold">LIEGI SUMMER</span></div>
+  </a>
+  <a class="fg" href="albums/08-desfile-chart-2025.html">
+    <span class="fg-num">08</span>
+    <img src="images/covers/08-desfile-chart-2025.jpg" alt="DESFILE CHART 2025">
+    <div class="fg-label"><span class="lbl-bold">DESFILE CHART 2025</span></div>
+  </a>
+  <a class="fg" href="albums/09-bt-carnaval.html">
+    <span class="fg-num">09</span>
+    <img src="images/covers/09-bt-carnaval.jpg" alt="BT CARNAVAL">
+    <div class="fg-label"><span class="lbl-bold">BT CARNAVAL</span></div>
+  </a>
+  <a class="fg" href="albums/10-bt-vinyl.html">
+    <span class="fg-num">10</span>
+    <img src="images/covers/10-bt-vinyl.jpg" alt="BT VINYL">
+    <div class="fg-label"><span class="lbl-bold">BT VINYL</span></div>
+  </a>
+  <a class="fg" href="albums/11-bt-hello-kitty.html">
+    <span class="fg-num">11</span>
+    <img src="images/covers/11-bt-hello-kitty.jpg" alt="BT HELLO KITTY">
+    <div class="fg-label"><span class="lbl-bold">BT HELLO KITTY</span></div>
+  </a>
+  <a class="fg" href="albums/12-bt-skincare.html">
+    <span class="fg-num">12</span>
+    <img src="images/covers/12-bt-skincare.jpg" alt="BT SKINCARE">
+    <div class="fg-label"><span class="lbl-bold">BT SKINCARE</span></div>
+  </a>
+  <a class="fg" href="albums/13-moving-acao.html">
+    <span class="fg-num">13</span>
+    <img src="images/covers/13-moving-acao.jpg" alt="MOVING AÇÃO">
+    <div class="fg-label"><span class="lbl-bold">MOVING AÇÃO</span></div>
+  </a>
+  <a class="fg" href="albums/14-bt-juicy-oil.html">
+    <span class="fg-num">14</span>
+    <img src="images/covers/14-bt-juicy-oil.jpg" alt="BT JUICY OIL">
+    <div class="fg-label"><span class="lbl-bold">BT JUICY OIL</span></div>
+  </a>
+  <a class="fg" href="albums/15-bt-skin.html">
+    <span class="fg-num">15</span>
+    <img src="images/covers/15-bt-skin.jpg" alt="BT SKIN">
+    <div class="fg-label"><span class="lbl-bold">BT SKIN</span></div>
+  </a>
+  <a class="fg" href="albums/16-bt-pencil-eyes.html">
+    <span class="fg-num">16</span>
+    <img src="images/covers/16-bt-pencil-eyes.jpg" alt="BT PENCIL EYES">
+    <div class="fg-label"><span class="lbl-bold">BT PENCIL EYES</span></div>
+  </a>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <p>Stephane Faria Photography © 2025</p>
+  <p>SP ___ RJ ___ ES</p>
+</footer>
+
+<!-- ── CONTATO OVERLAY ── -->
+<div class="contato-overlay" id="contato-overlay">
+  <a href="mailto:stephanepfaria@gmail.com">EMAIL: STEPHANEPFARIA@GMAIL.COM</a>
+  <a href="https://wa.me/5512996600062" target="_blank" rel="noopener">WHATSAPP: (12) 99660-0062</a>
+</div>
+<script>
+function showContato(e){
+  e.stopPropagation();
+  document.getElementById('contato-overlay').classList.add('active');
+}
+document.getElementById('contato-overlay').addEventListener('click',function(){
+  this.classList.remove('active');
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') document.getElementById('contato-overlay').classList.remove('active');
+});
+</script>
+
+</body>
+</html>

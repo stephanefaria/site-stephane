@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DISNEY WISH — Stephane Faria</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{background:#fff;color:#000;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:700;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+.nav{padding:10px 28px;font-size:13px;letter-spacing:0.02em;text-transform:uppercase;display:flex;gap:0;align-items:center;border-bottom:1px solid #e8e8e8;position:sticky;top:0;background:#fff;z-index:100;}
+.nav a{font-weight:900;font-size:13px;text-transform:uppercase;}
+.nav-sep{margin:0 6px;font-weight:900;}
+.album-header{padding:48px 28px 28px;border-bottom:1px solid #000;display:flex;align-items:flex-end;justify-content:space-between;}
+.album-num{font-size:11px;font-weight:700;letter-spacing:0.18em;color:#999;}
+.album-title{font-size:clamp(32px,5vw,72px);font-weight:900;letter-spacing:-0.02em;line-height:1;text-transform:uppercase;}
+.album-sub{font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#666;margin-top:6px;}
+.album-count{font-size:11px;font-weight:700;letter-spacing:0.12em;color:#999;text-align:right;}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:20px 32px;}
+@media(max-width:768px){.photo-grid{grid-template-columns:repeat(3,1fr);gap:2px;padding:0;}.photo-item{aspect-ratio:1/1;}}
+.photo-item{position:relative;overflow:hidden;background:#e4e2de;aspect-ratio:9/16;cursor:default;}
+.photo-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease;}
+.photo-item:hover img{transform:scale(1.05);}
+.photo-item video{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease;}
+.photo-item:hover video{transform:scale(1.05);}
+.video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;background:rgba(255,255,255,0.55);border-radius:50%;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2;transition:opacity .25s ease;backdrop-filter:blur(4px);}
+.video-play::after{content:'';border-left:26px solid rgba(255,255,255,1);border-top:15px solid transparent;border-bottom:15px solid transparent;margin-left:7px;}
+.photo-item:hover .video-play{opacity:0;}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:999;display:none;align-items:center;justify-content:center;}
+.lb.active{display:flex;}
+.lb-close{position:fixed;top:20px;right:24px;font-size:28px;color:#fff;cursor:default;font-weight:300;line-height:1;z-index:1001;}
+.lb-prev,.lb-next{position:fixed;top:50%;transform:translateY(-50%);font-size:24px;color:#fff;cursor:default;background:none;border:none;padding:20px;font-weight:300;z-index:1001;}
+.lb-prev{left:8px;}.lb-next{right:8px;}
+.footer{margin-top:80px;padding:18px 28px;border-top:1px solid #e0e0e0;display:flex;justify-content:space-between;align-items:center;}
+.footer p{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#888;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../portfolio.html">← STEPHANE FARIA PHOTOGRAPHY</a>
+  <span class="nav-sep">/</span>
+  <span>DISNEY WISH</span>
+</nav>
+
+<div class="album-header">
+  <div>
+    <div class="album-num">(06)</div>
+    <div class="album-title">DISNEY WISH</div>
+  </div>
+  <div class="album-count" id="photo-count"></div>
+</div>
+
+<div class="photo-grid" id="photo-grid"></div>
+
+<div class="lb" id="lb">
+  <span class="lb-close" onclick="closeLb()">✕</span>
+  <button class="lb-prev" onclick="lbNav(-1)">&#8592;</button>
+  <div id="lb-media"></div>
+  <button class="lb-next" onclick="lbNav(1)">&#8594;</button>
+</div>
+
+<footer class="footer">
+  <p>Stephane Faria Photography © 2025</p>
+  <p>SP ___ RJ ___ ES</p>
+</footer>
+
+<script>
+// ─────────────────────────────────────────────
+// ADICIONE OS NOMES DAS SUAS FOTOS/VÍDEOS AQUI:
+// Coloque os arquivos na pasta: images/albums/NOME-DO-ALBUM/
+// Aceita: .jpg, .JPG, .png, .mp4, .mov
+// ─────────────────────────────────────────────
+const photos = [
+  'foto-04-03-2024-10-44-39.jpg',
+  'gloss-kingdom-kamila-bruna-tavares-disney-08dez238379.jpg',
+  'gloss-majesty-fernanda-bruna-tavares-disney-08dez237821.jpg',
+  'gloss-majesty-rabesh-bruna-tavares-disney-08dez238566.jpg',
+  'gloss-majesty-rebeca-bruna-tavares-disney-08dez237883.jpg',
+  'gloss-wishes-fernanda-bruna-tavares-disney-08dez237909.jpg',
+  'gloss-wishes-kamila-bruna-tavares-disney-08dez238616.jpg',
+  'gloss-wishes-rebeca-bruna-tavares-disney-08dez237974.jpg',
+  'iluminador-close-fernanda-bruna-tavares-disney-08dez237165-1.jpg',
+  'iluminador-fernanda-bruna-tavares-disney-08dez237136.jpg',
+  'iluminador-gisele-bruna-tavares-disney-08dez237316.jpg',
+  'iluminador-kamila-bruna-tavares-disney-08dez238223.jpg',
+  'iluminador-rabesh-bruna-tavares-disney-08dez238306.jpg',
+  'iluminador-rebeca-bruna-tavares-disney-08dez237252.jpg',
+  'paleta-de-sombras-fernanda-bruna-tavares-disney-08dez237987.jpg',
+  'paleta-de-sombras-gisele-bruna-tavares-disney-08dez238066.jpg',
+  'paleta-de-sombras-kamila-bruna-tavares-disney-08dez239023.jpg',
+  'paleta-de-sombras-rabesh-bruna-tavares-disney-08dez239044.jpg',
+  'paleta-de-sombras-rebeca-bruna-tavares-disney-08dez238034.jpg',
+  'plush-asha-fernanda-1-bruna-tavares-disney-08dez237515-1-2.jpg',
+  'plush-asha-fernanda-1-bruna-tavares-disney-08dez237515-1.jpg',
+  'plush-asha-fernanda-2-bruna-tavares-disney-08dez237520-1-2.jpg',
+  'plush-asha-fernanda-2-bruna-tavares-disney-08dez237520-1.jpg',
+  'plush-asha-rabesh-2-bruna-tavares-disney-08dez238859.jpg',
+  'plush-asha-rabesh-2-bruna-tavares-disney-9.jpg',
+  'plush-asha-rabesh-bruna-tavares-disney-08dez238872.jpg',
+  'plush-asha-rabesh-bruna-tavares-disney-9.jpg',
+  'plush-asha-rebeca-1-bruna-tavares-disney-08dez237484.jpg',
+  'plush-asha-rebeca-1-bruna-tavares-disney-9.jpg',
+  'plush-asha-rebeca-2-bruna-tavares-disney-08dez237493-1-2.jpg',
+  'plush-asha-rebeca-2-bruna-tavares-disney-08dez237493-1.jpg',
+  'plush-queen-amaya-fernanda-1-bruna-tavares-disney-08dez237636-1.jpg',
+  'plush-queen-amaya-fernanda-2-bruna-tavares-disney-08dez237621.jpg',
+  'ret-gloss-kingdom-gisele-bruna-tavares-disney-08dez237781.jpg',
+  'ret-gloss-kingdom-rebeca-bruna-tavares-disney-08dez237771.jpg',
+  'ret-plush-asha-rabesh-2-bruna-tavares-disney-08dez238859.jpg',
+  'ret-plush-asha-rabesh-bruna-tavares-disney-08dez238872.jpg',
+  'ret-plush-asha-rebeca-1-bruna-tavares-disney-08dez237484.jpg',
+  'ret-plush-asha-rebeca-2-bruna-tavares-disney-08dez237493.jpg',
+  'ret-plush-queen-amaya-kamila-1-bruna-tavares-disney-08dez238938.jpg',
+  'ret-plush-queen-amaya-kamila-2-bruna-tavares-disney-08dez238929.jpg',
+  'ret-plush-queen-amaya-rebeca-1-bruna-tavares-disney-08dez237700.jpg',
+  'ret-plush-queen-amaya-rebeca-2-bruna-tavares-disney-08dez237686.jpg',
+  'ret-plush-valentino-fernanda-1-bruna-tavares-disney-08dez237404.jpg',
+  'ret-plush-valentino-fernanda-2-bruna-tavares-disney-08dez237372.jpg',
+  'ret-plush-valentino-gisele-1-bruna-tavares-disney-08dez237451.jpg',
+  'ret-plush-valentino-gisele-2-bruna-tavares-disney-08dez237435.jpg',
+  'ret-plush-valentino-rabesh-1-bruna-tavares-disney-08dez238758.jpg',
+  'ret-plush-valentino-rebeca-1-bruna-tavares-disney-08dez237598.jpg',
+  'ret-plush-valentino-rebeca-2-bruna-tavares-disney-08dez237594.jpg',
+  'sombra-liquida-fernanda-1-bruna-tavares-disney-08dez238109.jpg',
+  'sombra-liquida-fernanda-2-bruna-tavares-disney-08dez238103.jpg',
+  'sombra-liquida-gisele-1-bruna-tavares-disney-08dez238176.jpg',
+  'sombra-liquida-gisele-2-bruna-tavares-disney-08dez238166.jpg',
+  'sombra-liquida-kamila-1bruna-tavares-disney-08dez239144.jpg',
+  'sombra-liquida-kamila-2-bruna-tavares-disney-08dez239106.jpg',
+  'sombra-liquida-rabesh-bruna-tavares-disney-08dez239189.jpg',
+  'sombra-liquida-rebeca-1-bruna-tavares-disney-08dez238145.jpg',
+  'sombra-liquida-kamila-1bruna-tavares-disney-08dez239144-2.jpg',
+  'sombra-liquida-kamila-2-bruna-tavares-disney-08dez239106-2.jpg',
+];
+// ─────────────────────────────────────────────
+
+const BASE = '../images/albums/disney-wish/';
+const grid = document.getElementById('photo-grid');
+const countEl = document.getElementById('photo-count');
+
+function isVideo(name){ const n=name.toLowerCase(); return n.endsWith('.mp4')||n.endsWith('.mov'); }
+
+countEl.textContent = photos.length + (photos.length === 1 ? ' arquivo' : ' arquivos');
+photos.forEach((name, i) => {
+  const item = document.createElement('div');
+  item.className = 'photo-item';
+  if (isVideo(name)) {
+    const posterName = name.replace(/\.[^.]+$/, '.jpg');
+    item.innerHTML = `<video src="${BASE}${name}" poster="${BASE}preview/${posterName}" muted loop playsinline preload="none"></video><div class="video-play"></div>`;
+  } else {
+    item.innerHTML = `<img src="${BASE}${name}" alt="" loading="lazy">`;
+  }
+  item.onclick = () => openLb(i);
+  grid.appendChild(item);
+});
+
+grid.addEventListener('mouseover', e => {
+  const item = e.target.closest('.photo-item');
+  if (!item) return;
+  const v = item.querySelector('video');
+  if (v && v.paused) v.play();
+});
+grid.addEventListener('mouseout', e => {
+  const item = e.target.closest('.photo-item');
+  if (!item) return;
+  const v = item.querySelector('video');
+  if (v && !v.paused) { v.pause(); v.currentTime = 0; }
+});
+
+let current = 0;
+function openLb(i) {
+  current = i;
+  showLbItem(i);
+  document.getElementById('lb').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function showLbItem(i) {
+  const lb = document.getElementById('lb-media');
+  const name = photos[i];
+  if (isVideo(name)) {
+    lb.innerHTML = `<video src="${BASE}${name}" controls autoplay style="max-width:92vw;max-height:92vh;display:block;"></video>`;
+  } else {
+    lb.innerHTML = `<img src="${BASE}${name}" alt="" style="max-width:92vw;max-height:92vh;object-fit:contain;display:block;">`;
+  }
+}
+function closeLb() {
+  document.getElementById('lb').classList.remove('active');
+  document.getElementById('lb-media').innerHTML = '';
+  document.body.style.overflow = '';
+}
+function lbNav(dir) {
+  current = (current + dir + photos.length) % photos.length;
+  showLbItem(current);
+}
+document.getElementById('lb').addEventListener('click', function(e) {
+  if (e.target === this) closeLb();
+});
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lb').classList.contains('active')) return;
+  if (e.key === 'Escape') closeLb();
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
+</script>
+</body>
+</html>
