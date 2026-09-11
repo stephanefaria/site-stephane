@@ -188,7 +188,7 @@ html{scroll-behavior:smooth;}
 
 <!-- ── VÍDEO DE CABEÇALHO ── -->
 <div class="header-video">
-  <video src="video/header.mp4" autoplay muted loop playsinline preload="metadata"></video>
+  <video src="video/header.mp4" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture preload="auto"></video>
   <div class="hv-services">
     <ul>
       <li>Creative content</li>
@@ -350,6 +350,31 @@ html{scroll-behavior:smooth;}
   <a href="mailto:stephanepfaria@gmail.com">EMAIL: STEPHANEPFARIA@GMAIL.COM</a>
   <a href="https://wa.me/5512996600062" target="_blank" rel="noopener">WHATSAPP: (12) 99660-0062</a>
 </div>
+<script>
+// garante que o video do topo toque sozinho, mesmo se o navegador bloquear
+(function(){
+  var v = document.querySelector('.header-video video');
+  if (!v) return;
+  v.muted = true;               // navegadores so permitem autoplay sem som
+  function tentarTocar(){
+    var p = v.play();
+    if (p && p.catch) p.catch(function(){});
+  }
+  tentarTocar();
+  ['loadeddata','canplay'].forEach(function(e){ v.addEventListener(e, tentarTocar); });
+  // se ainda assim estiver parado, toca no primeiro toque/clique da pessoa
+  ['click','touchstart','scroll','keydown'].forEach(function(e){
+    document.addEventListener(e, function once(){
+      tentarTocar();
+      document.removeEventListener(e, once);
+    }, {passive:true});
+  });
+  // retoma quando a aba volta a ficar visivel
+  document.addEventListener('visibilitychange', function(){
+    if (!document.hidden) tentarTocar();
+  });
+})();
+</script>
 <script>
 function showContato(e){
   e.stopPropagation();
