@@ -27,6 +27,7 @@ a{text-decoration:none;color:inherit;}
 @media(max-width:768px){.photo-grid{grid-template-columns:repeat(3,1fr);gap:2px;padding:0;}.photo-item{aspect-ratio:1/1;}}
 .photo-item{position:relative;overflow:hidden;background:#e4e2de;aspect-ratio:9/16;cursor:default;}
 .photo-item.largo{grid-column:1 / -1;aspect-ratio:16/9;}
+.photo-item.largo.foto{aspect-ratio:3/2;}
 .video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:64px;height:64px;background:rgba(255,255,255,0.5);border-radius:50%;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2;transition:opacity .3s ease;backdrop-filter:blur(4px);}
 .video-play::after{content:'';border-left:22px solid #fff;border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:6px;}
 .photo-item:hover .video-play{opacity:0;}
@@ -88,12 +89,12 @@ const photos = [
   'img_4193.jpg',
   {v:'../video/texaco-campanha.mp4', poster:'preview/texaco-campanha.jpg', largo:true},
   'img_0004.jpg',
-  'img_0010.jpg',
   'img_0001.jpg',
   'dsc00329.jpg',
   'img_0007.jpg',
   'img_5343.jpg',
   'dsc00351.jpg',
+  {p:'img_0010.jpg', largo:true},
   'img_0015.jpg',
   'img_9996.jpg',
   'img_0013.jpg',
@@ -124,17 +125,19 @@ const grid = document.getElementById('photo-grid');
 const countEl = document.getElementById('photo-count');
 
 function ehVideo(it){ return typeof it === 'object' && it.v; }
+function ehLargo(it){ return typeof it === 'object' && it.largo; }
+function arquivoDe(it){ return typeof it === 'object' ? it.p : it; }
 
 countEl.textContent = photos.length + (photos.length === 1 ? ' arquivo' : ' arquivos');
 
 photos.forEach((it, i) => {
   const item = document.createElement('div');
-  item.className = 'photo-item' + (ehVideo(it) && it.largo ? ' largo' : '');
+  item.className = 'photo-item' + (ehLargo(it) ? ' largo' : '') + (ehLargo(it) && !ehVideo(it) ? ' foto' : '');
   if (ehVideo(it)) {
     // preload="none": nada e baixado ate a pessoa passar o mouse
     item.innerHTML = `<video src="${it.v}" poster="${BASE}${it.poster}" muted loop playsinline webkit-playsinline preload="none"></video><div class="video-play"></div>`;
   } else {
-    item.innerHTML = `<img src="${BASE}${it}" alt="" loading="lazy">`;
+    item.innerHTML = `<img src="${BASE}${arquivoDe(it)}" alt="" loading="lazy">`;
   }
   item.onclick = () => openLb(i);
   grid.appendChild(item);
@@ -167,7 +170,7 @@ function showLbItem(i) {
   if (ehVideo(it)) {
     lb.innerHTML = `<video src="${it.v}" controls autoplay loop playsinline style="max-width:92vw;max-height:92vh;display:block;"></video>`;
   } else {
-    lb.innerHTML = `<img src="${BASE}${it}" alt="" style="max-width:92vw;max-height:92vh;object-fit:contain;display:block;">`;
+    lb.innerHTML = `<img src="${BASE}${arquivoDe(it)}" alt="" style="max-width:92vw;max-height:92vh;object-fit:contain;display:block;">`;
   }
 }
 function closeLb() {
